@@ -267,4 +267,10 @@ if (fs.existsSync(distPath)) {
 
 app.listen(PORT, () => {
   console.log(`API server running on http://localhost:${PORT}`);
+
+  const SERVICE_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+  setInterval(() => {
+    fetch(`${SERVICE_URL}/api/health`).then(r => r.json()).then(d => console.log('[keep-alive] ping ok', d)).catch(e => console.error('[keep-alive] ping failed', e.message));
+  }, 10 * 60 * 1000);
+  console.log('[keep-alive] self-ping a cada 10 min para evitar sleep no Render');
 });
