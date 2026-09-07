@@ -16,7 +16,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'https://localiza-gylo.onrender.com',
         changeOrigin: true,
       },
     },
