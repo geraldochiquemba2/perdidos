@@ -3,7 +3,7 @@ services:
     name: localiza-angola
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: node photo-server.cjs
     envVars:
       - key: DATABASE_URL
