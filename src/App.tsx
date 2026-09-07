@@ -178,7 +178,7 @@ function AppContent() {
     setCases((current) => current.filter((c) => c.id !== id));
   };
   if (isLogin) return <div className="relative"><Login onEnter={(user) => { setRole(user.role as Role); setLocation('/dashboard'); }} /><Link href="/" data-testid="link-login-back-home" className="fixed right-5 top-5 z-50 inline-flex items-center gap-2 rounded-lg bg-[#173e4d] px-3 py-2 text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-[#214f5e]"><ArrowLeft size={14} />Voltar à página inicial</Link></div>;
-  if (isPublicHome) return <PublicHome cases={cases} />;
+  if (isPublicHome) return <PublicHome cases={cases} stats={stats} />;
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -291,7 +291,7 @@ function StatCard({ label, value, detail, icon: Icon, tone }: { label: string; v
   return <div className="rounded-xl border border-[#dedbd2] bg-[#fbfaf6] p-4 shadow-[var(--shadow-sm)] transition-transform hover:-translate-y-0.5"><div className="flex items-start justify-between"><div><p className="text-[11px] font-medium text-[#71807b]">{label}</p><p className="mt-2 font-display text-[30px] font-bold tracking-[-.04em] text-[#214554]">{value}</p></div><span className={cn('grid h-9 w-9 place-items-center rounded-lg', tones[tone])}><Icon size={17} /></span></div><div className="mt-3 flex items-center gap-1.5 text-[10px] text-[#7a8781]"><span className="h-1.5 w-1.5 rounded-full bg-[#74a98f]" />{detail}</div></div>;
 }
 
-function PublicHome({ cases }: { cases: PersonCase[] }) {
+function PublicHome({ cases, stats }: { cases: PersonCase[]; stats: { municipalities: number; totalCases: number; locatedThisMonth: number } }) {
   const [query, setQuery] = useState('');
   const [province, setProvince] = useState('Todas as províncias');
   const [showAll, setShowAll] = useState(false);
