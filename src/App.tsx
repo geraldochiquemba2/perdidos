@@ -11,8 +11,8 @@ import {
   SlidersHorizontal, UserCheck, UserCog, Users, X, XCircle, type LucideIcon,
 } from 'lucide-react';
 import { Link, Route, Switch, useLocation, useParams, Router as WouterRouter } from 'wouter';
-import heroImage from '@assets/site-images/luanda-skyline.jpg';
-import supportImage from '@assets/site-images/angola-community-workers.jpg';
+const heroImage = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a4a5a"/><stop offset="50%" stop-color="#1e5668"/><stop offset="100%" stop-color="#2d6970"/></linearGradient></defs><rect fill="url(#g)" width="1200" height="600"/><rect fill="#173e4d" y="400" width="1200" height="200" opacity="0.3"/><rect fill="#0d2a33" y="420" width="1200" height="180" opacity="0.2"/><circle cx="900" cy="150" r="60" fill="#f0c574" opacity="0.6"/><text fill="#d7e4de" font-family="sans-serif" font-size="36" x="50%" y="50%" text-anchor="middle" dy=".3em" opacity="0.7">Luanda, Angola</text></svg>');
+const supportImage = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2d6970"/><stop offset="100%" stop-color="#1e5668"/></linearGradient></defs><rect fill="url(#g)" width="800" height="400"/><circle cx="300" cy="180" r="40" fill="#d7e4de" opacity="0.3"/><circle cx="400" cy="200" r="50" fill="#d7e4de" opacity="0.2"/><circle cx="500" cy="180" r="40" fill="#d7e4de" opacity="0.3"/><text fill="#d7e4de" font-family="sans-serif" font-size="24" x="50%" y="50%" text-anchor="middle" dy=".3em" opacity="0.6">Comunidade Angola</text></svg>');
 
 type CaseStatus = 'Em falta' | 'Encontrada' | 'Não identificada' | 'Localizada' | 'Encerrada';
 type CaseCategory = 'Desaparecida' | 'Encontrada' | 'Não identificada';
