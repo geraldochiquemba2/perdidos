@@ -15,6 +15,10 @@ const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const BASE_URL = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
+console.log('DATABASE_URL set:', !!process.env.DATABASE_URL);
+console.log('TELEGRAM_BOT_TOKEN set:', !!process.env.TELEGRAM_BOT_TOKEN);
+console.log('TELEGRAM_CHAT_ID set:', !!process.env.TELEGRAM_CHAT_ID);
+
 const dbUrl = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_IU1aA2QRjyrd@ep-curly-violet-ayos0ij1-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require';
 const pool = new Pool({
   connectionString: dbUrl.includes('sslmode=') ? dbUrl : dbUrl + '&sslmode=require',
@@ -186,7 +190,8 @@ app.get('/api/health', async (req, res) => {
     await pool.query('SELECT 1');
     res.json({ status: 'ok' });
   } catch (err) {
-    res.status(500).json({ status: 'error', error: err.message });
+    console.error('Health check error:', err.message);
+    res.status(500).json({ status: 'error', error: err.message, dbUrlSet: !!process.env.DATABASE_URL });
   }
 });
 
