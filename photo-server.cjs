@@ -15,17 +15,13 @@ const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const BASE_URL = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
-console.log('DATABASE_URL set:', !!process.env.DATABASE_URL);
-console.log('TELEGRAM_BOT_TOKEN set:', !!process.env.TELEGRAM_BOT_TOKEN);
-console.log('TELEGRAM_CHAT_ID set:', !!process.env.TELEGRAM_CHAT_ID);
-
 const dbUrl = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_IU1aA2QRjyrd@ep-curly-violet-ayos0ij1-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require';
+const finalDbUrl = dbUrl.includes('sslmode=') ? dbUrl : dbUrl + (dbUrl.includes('?') ? '&' : '?') + 'sslmode=require';
+console.log('DB URL starts with:', finalDbUrl.substring(0, 40) + '...');
 const pool = new Pool({
-  connectionString: dbUrl.includes('sslmode=') ? dbUrl : dbUrl + '&sslmode=require',
+  connectionString: finalDbUrl,
   ssl: { rejectUnauthorized: false }
 });
-
-pool.on('error', (err) => { console.error('Pool error:', err.message); });
 
 app.use(cors());
 app.use(express.json());
