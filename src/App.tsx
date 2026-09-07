@@ -11,8 +11,8 @@ import {
   SlidersHorizontal, UserCheck, UserCog, Users, X, XCircle, type LucideIcon,
 } from 'lucide-react';
 import { Link, Route, Switch, useLocation, useParams, Router as WouterRouter } from 'wouter';
-const heroImage = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a4a5a"/><stop offset="50%" stop-color="#1e5668"/><stop offset="100%" stop-color="#2d6970"/></linearGradient></defs><rect fill="url(#g)" width="1200" height="600"/><rect fill="#173e4d" y="400" width="1200" height="200" opacity="0.3"/><rect fill="#0d2a33" y="420" width="1200" height="180" opacity="0.2"/><circle cx="900" cy="150" r="60" fill="#f0c574" opacity="0.6"/><text fill="#d7e4de" font-family="sans-serif" font-size="36" x="50%" y="50%" text-anchor="middle" dy=".3em" opacity="0.7">Luanda, Angola</text></svg>');
-const supportImage = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2d6970"/><stop offset="100%" stop-color="#1e5668"/></linearGradient></defs><rect fill="url(#g)" width="800" height="400"/><circle cx="300" cy="180" r="40" fill="#d7e4de" opacity="0.3"/><circle cx="400" cy="200" r="50" fill="#d7e4de" opacity="0.2"/><circle cx="500" cy="180" r="40" fill="#d7e4de" opacity="0.3"/><text fill="#d7e4de" font-family="sans-serif" font-size="24" x="50%" y="50%" text-anchor="middle" dy=".3em" opacity="0.6">Comunidade Angola</text></svg>');
+import heroImage from '@assets/site-images/luanda-skyline.jpg';
+import supportImage from '@assets/site-images/angola-community-workers.jpg';
 
 type CaseStatus = 'Em falta' | 'Encontrada' | 'Não identificada' | 'Localizada' | 'Encerrada';
 type CaseCategory = 'Desaparecida' | 'Encontrada' | 'Não identificada';
@@ -84,6 +84,7 @@ function CaseAvatar({ item, size = 'md' }: { item: PersonCase; size?: 'sm' | 'md
 
 function AppContent() {
   const [cases, setCases] = useState<PersonCase[]>([]);
+  const [stats, setStats] = useState({ municipalities: 0, totalCases: 0, locatedThisMonth: 0 });
   const [role, setRole] = useState<Role>('Administrador provincial');
   const [notificationsOn, setNotificationsOn] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -96,6 +97,13 @@ function AppContent() {
     fetch('/api/provinces').then(r => r.json()).then((rows: any[]) => {
       setProvinceList(rows.map((r) => r.name));
     }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then(r => r.json())
+      .then((data) => setStats(data))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -330,8 +338,8 @@ function PublicHome({ cases }: { cases: PersonCase[] }) {
             <div className="absolute inset-x-0 bottom-0 p-6 text-[#f8f6f0] sm:p-8">
               <p className="font-mono text-[9px] uppercase tracking-[.18em] text-[#f0c574]">Rede nacional</p>
               <div className="mt-3 flex items-end justify-between gap-4">
-                <div><p className="font-display text-3xl font-bold">12</p><p className="mt-1 text-[11px] text-[#d5e2db]">casos com informação pública</p></div>
-                <div className="text-right"><p className="font-display text-3xl font-bold text-[#f0c574]">39</p><p className="mt-1 text-[11px] text-[#d5e2db]">pessoas localizadas este mês</p></div>
+                <div><p className="font-display text-3xl font-bold">{stats.totalCases}</p><p className="mt-1 text-[11px] text-[#d5e2db]">casos com informação pública</p></div>
+                <div className="text-right"><p className="font-display text-3xl font-bold text-[#f0c574]">{stats.locatedThisMonth}</p><p className="mt-1 text-[11px] text-[#d5e2db]">pessoas localizadas este mês</p></div>
               </div>
             </div>
           </div>

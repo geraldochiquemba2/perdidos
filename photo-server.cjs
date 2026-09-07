@@ -181,6 +181,25 @@ app.post('/api/login', async (req, res) => {
 });
 
 // Health check
+// Stats endpoint
+app.get('/api/stats', async (req, res) => {
+  try {
+    const municipalities = await pool.query('SELECT COUNT(*) FROM municipalities');
+    const totalCases = await pool.query("SELECT COUNT(*) FROM person_cases WHERE status != 'Encerrada'");
+    const locatedThisMonth = await pool.query(
+      "SELECT COUNT(*) FROM person_cases WHERE status = 'Localizada' AND updated_at >= date_trunc('month', NOW())"
+    );
+    res.json({
+      municipalities: parseInt(municipalities.rows[0].count),
+      totalCases: parseInt(totalCases.rows[0].count),
+      locatedThisMonth: parseInt(locatedThisMonth.rows[0].count),
+    });
+  } catch (err) {
+    console.error('Stats error:', err.message);
+    res.json({ municipalities: 0, totalCases: 0, locatedThisMonth: 0 });
+  }
+});
+
 app.get('/api/health', async (req, res) => {
   try {
     await pool.query('SELECT 1');
